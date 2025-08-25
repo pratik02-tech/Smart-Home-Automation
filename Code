@@ -1,0 +1,66 @@
+#define relay1 2 // Connect relay1 to pin 2
+#define relay2 3 // Connect relay2 to pin 3
+#define relay3 4 // Connect relay3 to pin 4
+#define relay4 5 // Connect relay4 to pin 5
+
+String inputs = "
+ "; // Define inputs as a string
+
+void setup()
+{
+  Serial.begin(9600); // Set baud rate for communicating with phone
+  pinMode(relay1, OUTPUT); // Set relay1 as an output
+  pinMode(relay2, OUTPUT); // Set relay2 as an output
+  pinMode(relay3, OUTPUT); // Set relay3 as an output
+  pinMode(relay4, OUTPUT); // Set relay4 as an output
+
+  digitalWrite(relay1, LOW); // Turn relay1 off
+  digitalWrite(relay2, LOW); // Turn relay2 off
+  digitalWrite(relay3, LOW); // Turn relay3 off
+  digitalWrite(relay4, LOW); // Turn relay4 off
+}
+
+void loop()
+{
+  while(Serial.available()) // Check if there are available bytes to read
+  {
+    delay(10); // Delay to stabilize
+    char c = Serial.read(); // Read one byte from serial
+    if (c == '#') {
+      break; // Stop reading once '#' is detected
+    }
+    inputs += c; // Accumulate the input characters
+  }
+
+  if (inputs.length() > 0) // If there is any input
+  {
+    Serial.println(inputs); // Echo the input for debugging
+
+    if (inputs == "A") {
+      digitalWrite(relay1, LOW); // Turn relay1 off
+    }
+    else if (inputs == "a") {
+      digitalWrite(relay1, HIGH); // Turn relay1 on
+    }
+    else if (inputs == "B") {
+      digitalWrite(relay2, LOW); // Turn relay2 off
+    }
+    else if (inputs == "b") {
+      digitalWrite(relay2, HIGH); // Turn relay2 on
+    }
+    else if (inputs == "C") {
+      digitalWrite(relay3, LOW); // Turn relay3 off
+    }
+    else if (inputs == "c") {
+      digitalWrite(relay3, HIGH); // Turn relay3 on
+    }
+    else if (inputs == "D") {
+      digitalWrite(relay4, LOW); // Turn relay4 off
+    }
+    else if (inputs == "d") {
+      digitalWrite(relay4, HIGH); // Turn relay4 on
+    }
+
+    inputs = " "; // Clear the input after processing
+  }
+}
